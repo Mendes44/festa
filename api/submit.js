@@ -1,6 +1,11 @@
-const ConfirmacaoService = require('./confirmacaoService'); // Corrigido o caminho
+const ConfirmacaoService = require('./confirmacaoService'); // Certifique-se de que o caminho está correto
 
 module.exports = async (req, res) => {
+    // Verifica se o método é POST
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Método não permitido' });
+    }
+
     const { name, attendance, drink } = req.body;
 
     const service = new ConfirmacaoService();

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ConfirmacaoService = require('./api/confirmacaoService'); // Corrigido o caminho
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const confirmacaoService = new ConfirmacaoService();
 
@@ -60,7 +60,10 @@ app.get('/api/confirmations', async (req, res) => {
     }
 });
 
-// Inicia o servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
-});
+module.exports = app;
+
+
+// // Inicia o servidor
+// app.listen(port, () => {
+//     console.log(`Servidor rodando na porta ${port}`);
+// });

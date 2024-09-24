@@ -25,15 +25,16 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
 class ConfirmacaoService {
     constructor() {
-        this.authClient = null;
+        this.authClient = null; //Cliente de autenticação
     }
 
+    // Inicializa o cliente de autenticação se ainda não estiver feito.
     async init() {
         if (!this.authClient) {
             this.authClient = await auth.getClient();
         }
     }
-
+    // Adiciona uma nova confirmação à planilha
     async addConfirmation(data) {
         try {
             await this.init();
@@ -55,7 +56,7 @@ class ConfirmacaoService {
             throw error; // Re-throw to handle it at a higher level if necessary
         }
     }
-
+    // Recupera todas as confirmações da planilha
     async getAllConfirmations() {
         try {
             await this.init();
@@ -80,10 +81,11 @@ class ConfirmacaoService {
             return confirmations;
         } catch (error) {
             console.error('Erro ao obter confirmações:', error);
-            throw error; // Re-throw to handle it at a higher level if necessary
+            throw new Error('Falha ao obter dados da planilha. Verifique o nome da aba ou as permissões da planilha.'); // Mensagem mais clara
         }
     }
-
+    
+    // Verifica se o nome já foi usado para confirmar presença
     async isDuplicateName(name) {
         const confirmations = await this.getAllConfirmations();
         return confirmations.some(confirmation => confirmation.Nome.toLowerCase() === name.toLowerCase());
