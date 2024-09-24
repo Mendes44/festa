@@ -53,13 +53,13 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
 
     // Validação para garantir que apenas "Sim" ou "Não" sejam enviados
     if (attendance !== 'Sim' && attendance !== 'Não') {
-        alert('Valor inválido para presença. Alterando para "Sim".');
+        alert('CHUPA VITIM FDP VIADO! Valor inválido para presença. Alterando para "Sim".');
         document.getElementById('attendance').value = 'Sim'; // Define um valor padrão
         attendance = 'Sim'; // Atualiza a variável para manter a lógica
     }
 
     if (drink !== 'Sim' && drink !== 'Não') {
-        alert('Valor inválido para bebida. Alterando para "Sim".');
+        alert('CHUPA VITIM FDP VIADO! Valor inválido para bebida. Alterando para "Sim".');
         document.getElementById('drink').value = 'Sim'; // Define um valor padrão
         drink = 'Sim'; // Atualiza a variável para manter a lógica
     }
