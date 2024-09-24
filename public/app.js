@@ -53,13 +53,13 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
 
     // Validação para garantir que apenas "Sim" ou "Não" sejam enviados
     if (attendance !== 'Sim' && attendance !== 'Não') {
-        document.getElementById('responseMessage').innerText = 'Escolha uma opção válida para presença.';
-        return;
+        document.getElementById('attendance').value = 'Sim'; // Define um valor padrão
+        attendance = 'Sim'; // Atualiza a variável para manter a lógica
     }
 
     if (drink !== 'Sim' && drink !== 'Não') {
-        document.getElementById('responseMessage').innerText = 'Escolha uma opção válida para bebida.';
-        return;
+        document.getElementById('drink').value = 'Sim'; // Define um valor padrão
+        drink = 'Sim'; // Atualiza a variável para manter a lógica
     }
 
     try {
