@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Presença</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <header>
+        <h1>Confirmação de Presença</h1>
+        <p>Confirme se você vai e se vai beber!</p>
+    </header>
+
+    <div class="container">
+        <h2>Formulário de Confirmação</h2>
+        <form id="confirmationForm">
+            <label for="name">Seu Nome:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="attendance">Você vai à festa?</label>
+            <select id="attendance" name="attendance" required>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select>
+
+            <label for="drink">Vai beber?</label>
+            <select id="drink" name="drink" required>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select>
+
+            <button type="submit">Confirmar</button>
+        </form>
+        <p id="responseMessage"></p>
+
+        <h2>Lista de Confirmados</h2>
+        <ul id="confirmationList"></ul>
+    </div>
+
+    <footer>
+        <p>Evento confirmado para o dia 30 de setembro!</p>
+        <p>Desenvolvido por <span>Marcos Mendes</span></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

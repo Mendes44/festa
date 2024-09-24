@@ -1,0 +1,18 @@
+{
+  "name": "confirmacao_festa",
+  "version": "1.0.0",
+  "description": "Projeto de confirmação de presença com funções serverless na Vercel",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Marcos Mendes",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "googleapis": "^144.0.0",
+    "xlsx": "^0.18.5"
+  }
+}
