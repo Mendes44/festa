@@ -42,8 +42,8 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
     event.preventDefault(); // Impede o envio padrão do formulário
 
     const name = document.getElementById('name').value;
-    const attendance = document.getElementById('attendance').value;
-    const drink = document.getElementById('drink').value;
+    let attendance = document.getElementById('attendance').value;
+    let drink = document.getElementById('drink').value;
 
     // Valida o nome
     if (!validateName(name)) {
@@ -53,15 +53,15 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
 
     // Validação para garantir que apenas "Sim" ou "Não" sejam enviados
     if (attendance !== 'Sim' && attendance !== 'Não') {
+        alert('Valor inválido para presença. Alterando para "Sim".');
         document.getElementById('attendance').value = 'Sim'; // Define um valor padrão
         attendance = 'Sim'; // Atualiza a variável para manter a lógica
-        alert("Chupa Vitim seu FDP viado!")
     }
 
     if (drink !== 'Sim' && drink !== 'Não') {
+        alert('Valor inválido para bebida. Alterando para "Sim".');
         document.getElementById('drink').value = 'Sim'; // Define um valor padrão
         drink = 'Sim'; // Atualiza a variável para manter a lógica
-        alert("Chupa Vitim seu FDP viado!")
     }
 
     try {
