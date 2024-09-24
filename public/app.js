@@ -55,11 +55,13 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
     if (attendance !== 'Sim' && attendance !== 'Não') {
         document.getElementById('attendance').value = 'Sim'; // Define um valor padrão
         attendance = 'Sim'; // Atualiza a variável para manter a lógica
+        alert("Chupa Vitim seu FDP viado!")
     }
 
     if (drink !== 'Sim' && drink !== 'Não') {
         document.getElementById('drink').value = 'Sim'; // Define um valor padrão
         drink = 'Sim'; // Atualiza a variável para manter a lógica
+        alert("Chupa Vitim seu FDP viado!")
     }
 
     try {
