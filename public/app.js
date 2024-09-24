@@ -1,7 +1,6 @@
-
 // Função para validar o nome
 function validateName(name) {
-    const regex = /^[a-zA-Z\s]+$/; // Permite apenas letras e espaços
+    const regex = /^[a-zA-Z\s]*$/; // Permite apenas letras e espaços
     return regex.test(name);
 }
 
@@ -9,7 +8,7 @@ function validateName(name) {
 async function loadConfirmations() {
     try {
         const response = await fetch('/api/confirmations');
-        
+
         if (!response.ok) {
             const errorMessage = await response.text();
             throw new Error(`Erro ao carregar confirmações: ${errorMessage}`);
@@ -52,6 +51,17 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
         return;
     }
 
+    // Validação para garantir que apenas "Sim" ou "Não" sejam enviados
+    if (attendance !== 'Sim' && attendance !== 'Não') {
+        document.getElementById('responseMessage').innerText = 'Escolha uma opção válida para presença.';
+        return;
+    }
+
+    if (drink !== 'Sim' && drink !== 'Não') {
+        document.getElementById('responseMessage').innerText = 'Escolha uma opção válida para bebida.';
+        return;
+    }
+
     try {
         const response = await fetch('/api/submit', {
             method: 'POST',
@@ -74,24 +84,9 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
     }
 });
 
-// Impede que o usuário altere as opções "Sim" e "Não"
-const attendanceSelect = document.getElementById('attendance');
-const drinkSelect = document.getElementById('drink');
-
-attendanceSelect.addEventListener('change', (event) => {
-    if (event.target.value !== 'Sim' && event.target.value !== 'Não') {
-        event.target.value = 'Sim'; // Defina um valor padrão
-    }
-});
-
-drinkSelect.addEventListener('change', (event) => {
-    if (event.target.value !== 'Sim' && event.target.value !== 'Não') {
-        event.target.value = 'Sim'; // Defina um valor padrão
-    }
-});
-
 // Carregar lista de confirmações ao iniciar
 document.addEventListener('DOMContentLoaded', loadConfirmations);
+
 
 
 
