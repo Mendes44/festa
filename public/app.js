@@ -1,7 +1,7 @@
 // Função para validar o nome
 function validateName(name) {
     const regex = /^[a-zA-Z\s]*$/; // Permite apenas letras e espaços
-    return regex.test(name);
+    return regex.test(name) && !name.includes('<'); // Verifica se não contém a tag de abertura
 }
 
 // Função para carregar confirmações
@@ -53,13 +53,13 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
 
     // Validação para garantir que apenas "Sim" ou "Não" sejam enviados
     if (attendance !== 'Sim' && attendance !== 'Não') {
-        alert('CHUPA VITIM FDP VIADO! Valor inválido para presença. Alterando para "Sim".');
+        alert('Valor inválido para presença. Alterando para "Sim".');
         document.getElementById('attendance').value = 'Sim'; // Define um valor padrão
         attendance = 'Sim'; // Atualiza a variável para manter a lógica
     }
 
     if (drink !== 'Sim' && drink !== 'Não') {
-        alert('CHUPA VITIM FDP VIADO! Valor inválido para bebida. Alterando para "Sim".');
+        alert('Valor inválido para bebida. Alterando para "Sim".');
         document.getElementById('drink').value = 'Sim'; // Define um valor padrão
         drink = 'Sim'; // Atualiza a variável para manter a lógica
     }
@@ -88,7 +88,6 @@ document.getElementById('confirmationForm').addEventListener('submit', async (ev
 
 // Carregar lista de confirmações ao iniciar
 document.addEventListener('DOMContentLoaded', loadConfirmations);
-
 
 
 
