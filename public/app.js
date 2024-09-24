@@ -1,3 +1,9 @@
+// Função para validar o nome
+function validateName(name) {
+    const regex = /^[a-zA-Z\s]+$/; // Permite apenas letras e espaços
+    return regex.test(name);
+}
+
 async function loadConfirmations() {
     try {
         const response = await fetch('/api/confirmations');
