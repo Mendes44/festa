@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculos de Confirmações</title>
+    <link rel="stylesheet" href="estilo.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0B3D0B 0%, #50C878 100%);
+            color: #f1f1f1;
+            text-align: center;
+            padding: 20px;
+        }
+        .resultado-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .resultado-item {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #39FF14;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        a {
+            color: #39FF14;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #39FF14;
+            width: 200px;
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            background-color: #39FF14;
+            color: #282c34;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cálculos de Confirmações</h1>
+        <p>Veja o total de confirmações e calcule os custos!</p>
+    </header>
+
+    <div class="resultado-container">
+        <div class="resultado-item" id="totalConfirmados">Total de Convidados Confirmados: 0</div>
+        <div class="resultado-item" id="totalNaoConfirmados">Total de Convidados Não Confirmados: 0</div>
+        <div class="resultado-item" id="totalBebida">Total de Bebedores: 0</div>
+        <div class="resultado-item" id="totalNaoBebida">Total de Não Bebedores: 0</div>
+    </div>
+
+    <h2>Insira os Valores para Cálculo</h2>
+    <input type="number" id="valorCarne" placeholder="Valor da Carne (R$)" />
+    <input type="number" id="valorBebida" placeholder="Valor da Bebida (R$)" />
+    <button id="calcularBtn">Calcular Custos</button>
+
+    <div class="resultado-container" id="resultadoContainer">
+        <div class="resultado-item" id="custoCarne">Custo Total da Carne: R$0,00</div>
+        <div class="resultado-item" id="custoBebida">Custo Total da Bebida: R$0,00</div>
+        <div class="resultado-item" id="divisaoCarne">Divisão da Carne por Convidado: R$0,00</div>
+        <div class="resultado-item" id="divisaoBebida">Divisão da Bebida por Bebedor: R$0,00</div>
+    </div>
+
+    <a class="btn-voltar" href="index.html">Voltar para a Página Principal</a>
+
+    <script>
+        async function loadCalculations() {
+            try {
+                const response = await fetch('/api/confirmations');
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Erro ao carregar cálculos: ${errorMessage}`);
+                }
+
+                const confirmations = await response.json();
+                const totalConfirmados = confirmations.filter(c => c.Presença === 'Sim').length;
+                const totalBebidas = confirmations.filter(c => c.Bebida === 'Sim').length;
+
+                // Atualiza os elementos na página com os dados obtidos
+                document.getElementById('totalConfirmados').innerText = `Total de Convidados Confirmados: ${totalConfirmados}`;
+                document.getElementById('totalNaoConfirmados').innerText = `Total de Convidados Não Confirmados: ${confirmations.length - totalConfirmados}`;
+                document.getElementById('totalBebida').innerText = `Total de Bebedores: ${totalBebidas}`;
+                document.getElementById('totalNaoBebida').innerText = `Total de Não Bebedores: ${totalConfirmados - totalBebidas}`;
+
+            } catch (error) {
+                console.error('Erro ao carregar cálculos:', error);
+            }
+        }
+
+        // Função para calcular os custos
+        document.getElementById('calcularBtn').addEventListener('click', async () => {
+            const valorCarne = parseFloat(document.getElementById('valorCarne').value);
+            const valorBebida = parseFloat(document.getElementById('valorBebida').value);
+
+            try {
+                const response = await fetch('/api/confirmations');
+                const confirmations = await response.json();
+                const totalConfirmados = confirmations.filter(c => c.Presença === 'Sim').length;
+                const totalBebidas = confirmations.filter(c => c.Bebida === 'Sim').length;
+
+                // Cálculos
+                const custoCarne = totalConfirmados * 0.4; // 400g de carne por convidado
+                const custoBebida = totalBebidas * 1.5; // 1.5L de bebida por bebedor
+
+                // Divisões
+                const divisaoCarne = totalConfirmados > 0 ? (valorCarne * custoCarne) / totalConfirmados : 0;
+                const divisaoBebida = totalBebidas > 0 ? (valorBebida * custoBebida) / totalBebidas : 0;
+
+                // Atualiza a exibição dos resultados
+                document.getElementById('custoCarne').innerText = `Custo Total da Carne: R$${(valorCarne * custoCarne).toFixed(2)}`;
+                document.getElementById('custoBebida').innerText = `Custo Total da Bebida: R$${(valorBebida * custoBebida).toFixed(2)}`;
+                document.getElementById('divisaoCarne').innerText = `Divisão da Carne por Convidado: R$${divisaoCarne.toFixed(2)}`;
+                document.getElementById('divisaoBebida').innerText = `Divisão da Bebida por Bebedor: R$${divisaoBebida.toFixed(2)}`;
+
+            } catch (error) {
+                console.error('Erro ao calcular:', error);
+                document.getElementById('resultado').innerText = 'Ocorreu um erro ao calcular.';
+            }
+        });
+
+        // Carregar cálculos ao iniciar a página
+        document.addEventListener('DOMContentLoaded', loadCalculations);
+    </script>
+</body>
+</html>

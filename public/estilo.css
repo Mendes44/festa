@@ -123,3 +123,26 @@ footer p{
 footer span {
     font-weight: bold;
 }
+
+/* Calculo */
+.btn-voltar {
+    border: 1px solid #0B3D0B;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #0B3D0B;
+    color: #f1f1f1;
+}
+
+.btn-voltar:hover {
+    background-color: #28a745;
+    border: #28a745;
+}
+
+.btn-calc {
+    text-decoration: none;
+    color: #f1f1f1;
+}
+
+.btn-calc:hover {
+    color: #0B3D0B;
+}

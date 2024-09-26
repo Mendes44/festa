@@ -90,6 +90,22 @@ class ConfirmacaoService {
         const confirmations = await this.getAllConfirmations();
         return confirmations.some(confirmation => confirmation.Nome.toLowerCase() === name.toLowerCase());
     }
+
+    async getCalculations() {
+        try {
+            const confirmations = await this.getAllConfirmations();
+            const totalConfirmed = confirmations.filter(c => c.Presença === 'Sim').length;
+            const totalDrinks = confirmations.filter(c => c.Bebida === 'Sim').length;
+
+            return {
+                totalConfirmed,
+                totalDrinks,
+            };
+        } catch (error) {
+            console.error('Erro ao calcular dados:', error);
+            throw error;
+        }
+    }
 }
 
 module.exports = ConfirmacaoService;
