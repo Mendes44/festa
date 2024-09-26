@@ -35,11 +35,6 @@
             margin-top: 20px;
             display: inline-block;
         }
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centraliza os inputs */
-        }
         input {
             padding: 10px;
             margin: 10px;
@@ -55,6 +50,13 @@
             border: none;
             cursor: pointer;
             border-radius: 5px;
+        }
+        .carnes-sugestoes {
+            display: none; /* Oculto por padrão */
+            border: 1px solid #39FF14;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -72,19 +74,29 @@
     </div>
 
     <h2>Insira os Valores para Cálculo</h2>
-    <div class="input-container">
-        <input type="number" id="valorCarne" placeholder="Valor da Carne (R$)" />
-        <input type="number" id="valorBebida" placeholder="Valor da Bebida (R$)" />
-        <input type="number" id="totalConvidados" placeholder="Total de Convidados" />
-        <input type="number" id="totalBebedores" placeholder="Total de Bebedores" />
-        <button id="calcularBtn">Calcular Custos</button>
-    </div>
+    <input type="number" id="valorCarne" placeholder="Valor da Carne (R$)" />
+    <input type="number" id="valorBebida" placeholder="Valor da Bebida (R$)" />
+    <input type="number" id="totalConvidados" placeholder="Total de Convidados" />
+    <input type="number" id="totalBebedores" placeholder="Total de Bebedores" />
+    <button id="calcularBtn">Calcular Custos</button>
 
     <div class="resultado-container" id="resultadoContainer">
         <div class="resultado-item highlight" id="divisaoCarne">Divisão da Carne por Convidado: R$0,00</div>
         <div class="resultado-item highlight" id="divisaoBebida">Divisão da Bebida por Bebedor: R$0,00</div>
-        <div class="resultado-item" id="quantidadeCarne">Quantidade de Carne (Kg): 0</div>
+        <div class="resultado-item highlight" id="quantidadeCarne">
+            Quantidade de Carne (Kg): 
+            <span id="quantidadeCarneValue">0</span>
+            <button id="showMeatDivision">Ver Divisão das Carnes</button> <!-- Botão para mostrar divisão -->
+        </div>
         <div class="resultado-item" id="quantidadeBebida">Quantidade de Bebida (L): 0</div>
+    </div>
+
+    <div class="carnes-sugestoes" id="meatDivision">
+        <h3>Divisão das Carnes:</h3>
+        <p>50% Carne de Boi (Picanha, Alcatra, Contra Filé)</p>
+        <p>20% Frango</p>
+        <p>20% Linguiça</p>
+        <p>10% Outras opções</p>
     </div>
 
     <a class="btn-voltar" href="index.html">Voltar para a Página Principal</a>
@@ -122,23 +134,25 @@
             const totalBebedores = parseInt(document.getElementById('totalBebedores').value);
 
             // Cálculos para carne e bebida
-            const custoCarne = totalConvidados * 0.4; // 400g de carne por convidado
-            const custoBebida = totalBebedores * 1.5; // 1.5L de bebida por bebedor
+            const quantidadeCarne = totalConvidados * 0.4; // Total de carne em kg
+            const quantidadeBebida = totalBebedores * 1.5; // Total de bebida em litros
+
+            // Atualiza a exibição dos resultados
+            document.getElementById('quantidadeCarneValue').innerText = quantidadeCarne.toFixed(2);
+            document.getElementById('quantidadeBebida').innerText = `Quantidade de Bebida (L): ${quantidadeBebida.toFixed(2)}`;
 
             // Divisões
             const divisaoCarne = totalConvidados > 0 ? valorCarne / totalConvidados : 0;
             const divisaoBebida = totalBebedores > 0 ? valorBebida / totalBebedores : 0;
 
-            // Quantidade de carne e bebida
-            const quantidadeCarne = totalConvidados * 0.4; // Total de carne em kg
-            const quantidadeBebida = totalBebedores * 1.5; // Total de bebida em litros
-
-            // Atualiza a exibição dos resultados
             document.getElementById('divisaoCarne').innerText = `Divisão da Carne por Convidado: R$${divisaoCarne.toFixed(2)}`;
             document.getElementById('divisaoBebida').innerText = `Divisão da Bebida por Bebedor: R$${divisaoBebida.toFixed(2)}`;
-            document.getElementById('quantidadeCarne').innerText = `Quantidade de Carne (Kg): ${(quantidadeCarne).toFixed(2)}`;
-            document.getElementById('quantidadeBebida').innerText = `Quantidade de Bebida (L): ${(quantidadeBebida).toFixed(2)}`;
+        });
 
+        // Mostrar a divisão das carnes ao clicar
+        document.getElementById('showMeatDivision').addEventListener('click', () => {
+            const meatDivision = document.getElementById('meatDivision');
+            meatDivision.style.display = meatDivision.style.display === 'none' ? 'block' : 'none';
         });
 
         // Carregar cálculos ao iniciar a página
