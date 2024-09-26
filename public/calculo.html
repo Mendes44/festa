@@ -26,11 +26,19 @@
             border-radius: 5px;
             background-color: rgba(255, 255, 255, 0.1);
         }
+        .resultado-item.highlight {
+            background-color: rgba(255, 255, 255, 0.3); /* Fundo mais destacado */
+        }
         a {
             color: #39FF14;
             text-decoration: none;
             margin-top: 20px;
             display: inline-block;
+        }
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza os inputs */
         }
         input {
             padding: 10px;
@@ -64,17 +72,17 @@
     </div>
 
     <h2>Insira os Valores para Cálculo</h2>
-    <input type="number" id="valorCarne" placeholder="Valor da Carne (R$)" />
-    <input type="number" id="valorBebida" placeholder="Valor da Bebida (R$)" />
-    <input type="number" id="totalConvidados" placeholder="Total de Convidados" />
-    <input type="number" id="totalBebedores" placeholder="Total de Bebedores" />
-    <button id="calcularBtn">Calcular Custos</button>
+    <div class="input-container">
+        <input type="number" id="valorCarne" placeholder="Valor da Carne (R$)" />
+        <input type="number" id="valorBebida" placeholder="Valor da Bebida (R$)" />
+        <input type="number" id="totalConvidados" placeholder="Total de Convidados" />
+        <input type="number" id="totalBebedores" placeholder="Total de Bebedores" />
+        <button id="calcularBtn">Calcular Custos</button>
+    </div>
 
     <div class="resultado-container" id="resultadoContainer">
-        <div class="resultado-item" id="custoCarne">Custo Total da Carne: R$0,00</div>
-        <div class="resultado-item" id="custoBebida">Custo Total da Bebida: R$0,00</div>
-        <div class="resultado-item" id="divisaoCarne">Divisão da Carne por Convidado: R$0,00</div>
-        <div class="resultado-item" id="divisaoBebida">Divisão da Bebida por Bebedor: R$0,00</div>
+        <div class="resultado-item highlight" id="divisaoCarne">Divisão da Carne por Convidado: R$0,00</div>
+        <div class="resultado-item highlight" id="divisaoBebida">Divisão da Bebida por Bebedor: R$0,00</div>
         <div class="resultado-item" id="quantidadeCarne">Quantidade de Carne (Kg): 0</div>
         <div class="resultado-item" id="quantidadeBebida">Quantidade de Bebida (L): 0</div>
     </div>
@@ -118,16 +126,14 @@
             const custoBebida = totalBebedores * 1.5; // 1.5L de bebida por bebedor
 
             // Divisões
-            const divisaoCarne = totalConvidados > 0 ? (valorCarne * custoCarne) / totalConvidados : 0;
-            const divisaoBebida = totalBebedores > 0 ? (valorBebida * custoBebida) / totalBebedores : 0;
+            const divisaoCarne = totalConvidados > 0 ? valorCarne / totalConvidados : 0;
+            const divisaoBebida = totalBebedores > 0 ? valorBebida / totalBebedores : 0;
 
             // Quantidade de carne e bebida
             const quantidadeCarne = totalConvidados * 0.4; // Total de carne em kg
             const quantidadeBebida = totalBebedores * 1.5; // Total de bebida em litros
 
             // Atualiza a exibição dos resultados
-            document.getElementById('custoCarne').innerText = `Custo Total da Carne: R$${(valorCarne * custoCarne).toFixed(2)}`;
-            document.getElementById('custoBebida').innerText = `Custo Total da Bebida: R$${(valorBebida * custoBebida).toFixed(2)}`;
             document.getElementById('divisaoCarne').innerText = `Divisão da Carne por Convidado: R$${divisaoCarne.toFixed(2)}`;
             document.getElementById('divisaoBebida').innerText = `Divisão da Bebida por Bebedor: R$${divisaoBebida.toFixed(2)}`;
             document.getElementById('quantidadeCarne').innerText = `Quantidade de Carne (Kg): ${(quantidadeCarne).toFixed(2)}`;
