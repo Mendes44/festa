@@ -58,6 +58,9 @@
             margin-top: 10px;
             background-color: rgba(255, 255, 255, 0.1);
         }
+        .hidden {
+            display: none; /* Classe para ocultar elementos */
+        }
     </style>
 </head>
 <body>
@@ -74,7 +77,9 @@
     </div>
 
     <h2>Insira os Valores para Cálculo</h2>
+    <label for="valorCarne">Valor da Carne:</label>
     <input type="number" id="valorCarne" placeholder="Valor da Carne (R$)" />
+    <label for="valorBebida">Valor da Bebida:</label>
     <input type="number" id="valorBebida" placeholder="Valor da Bebida (R$)" />
     <input type="number" id="totalConvidados" placeholder="Total de Convidados" />
     <input type="number" id="totalBebedores" placeholder="Total de Bebedores" />
@@ -99,6 +104,16 @@
         <p>10% Outras opções</p>
     </div>
 
+    <h2 class="hidden" id="pagamentoTitulo">Pagamento dos Convidados</h2>
+    <div class="hidden" id="pagamentoContainer">
+        <p>Valor para quem bebe: <input type="number" id="valorBebedor" value="60" /></p>
+        <p>Valor para quem vai: <input type="number" id="valorConvidado" value="45" /></p>
+        <div id="confirmadosPagos"></div>
+        <button id="calcularTotalArrecadado">Calcular Total Arrecadado</button>
+        <div class="resultado-item" id="totalArrecadado">Total Arrecadado: R$0,00</div>
+    </div>
+    <button id="maisInfoBtn">Mais Info</button>
+
     <a class="btn-voltar" href="index.html">Voltar para a Página Principal</a>
 
     <script>
@@ -120,6 +135,21 @@
                 document.getElementById('totalNaoConfirmados').innerText = `Total de Convidados Não Confirmados: ${confirmations.length - totalConfirmados}`;
                 document.getElementById('totalBebida').innerText = `Total de Bebedores: ${totalBebidas}`;
                 document.getElementById('totalNaoBebida').innerText = `Total de Não Bebedores: ${totalConfirmados - totalBebidas}`;
+
+                // Adiciona opções de pagamento
+                const confirmadosPagos = document.getElementById('confirmadosPagos');
+                confirmations.forEach((c, index) => {
+                    if (c.Presença === 'Sim') {
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                            <label>${c.Nome}:</label>
+                            <select id="pagamento-${index}">
+                                <option value="0">Não Pagou</option>
+                                <option value="1">Pagou</option>
+                            </select>`;
+                        confirmadosPagos.appendChild(div);
+                    }
+                });
 
             } catch (error) {
                 console.error('Erro ao carregar cálculos:', error);
@@ -145,14 +175,47 @@
             const divisaoCarne = totalConvidados > 0 ? valorCarne / totalConvidados : 0;
             const divisaoBebida = totalBebedores > 0 ? valorBebida / totalBebedores : 0;
 
+            // Atualiza as divisões
             document.getElementById('divisaoCarne').innerText = `Divisão da Carne por Convidado: R$${divisaoCarne.toFixed(2)}`;
             document.getElementById('divisaoBebida').innerText = `Divisão da Bebida por Bebedor: R$${divisaoBebida.toFixed(2)}`;
         });
 
-        // Mostrar a divisão das carnes ao clicar
+        // Exibe a divisão das carnes ao clicar
         document.getElementById('showMeatDivision').addEventListener('click', () => {
             const meatDivision = document.getElementById('meatDivision');
             meatDivision.style.display = meatDivision.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Alterna a exibição da seção de pagamento
+        document.getElementById('maisInfoBtn').addEventListener('click', () => {
+            const pagamentoTitulo = document.getElementById('pagamentoTitulo');
+            const pagamentoContainer = document.getElementById('pagamentoContainer');
+            const isHidden = pagamentoTitulo.classList.contains('hidden');
+
+            if (isHidden) {
+                pagamentoTitulo.classList.remove('hidden');
+                pagamentoContainer.classList.remove('hidden');
+            } else {
+                pagamentoTitulo.classList.add('hidden');
+                pagamentoContainer.classList.add('hidden');
+            }
+        });
+
+        // Calcula o total arrecadado
+        document.getElementById('calcularTotalArrecadado').addEventListener('click', () => {
+            const valorBebedor = parseFloat(document.getElementById('valorBebedor').value);
+            const valorConvidado = parseFloat(document.getElementById('valorConvidado').value);
+            const confirmadosPagos = document.getElementById('confirmadosPagos').children;
+            let totalArrecadado = 0;
+
+            for (let i = 0; i < confirmadosPagos.length; i++) {
+                const select = confirmadosPagos[i].querySelector('select');
+                if (select.value === '1') { // Se pagou
+                    totalArrecadado += (confirmadosPagos[i].textContent.includes('Bebida')) ? valorBebedor : valorConvidado;
+                }
+            }
+
+            document.getElementById('totalArrecadado').innerText = `Total Arrecadado: R$${totalArrecadado.toFixed(2)}`;
         });
 
         // Carregar cálculos ao iniciar a página
